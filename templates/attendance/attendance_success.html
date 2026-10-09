@@ -1,0 +1,94 @@
+
+{% extends "base.html" %}
+
+{% block title %}Attendance Submitted{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-7 col-lg-6">
+
+            <div class="card border-0 shadow-lg rounded-4 text-center overflow-hidden">
+
+                <!-- Success Header -->
+
+                <div class="bg-success text-white p-4">
+
+                    <div class="bg-white text-success rounded-circle
+                                d-inline-flex align-items-center
+                                justify-content-center"
+                         style="width: 85px; height: 85px;">
+
+                        <i class="bi bi-check-circle-fill"
+                           style="font-size: 48px;"></i>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Content -->
+
+                <div class="card-body p-4 p-md-5">
+
+                    <h2 class="fw-bold mb-3">
+                        Attendance Submitted
+                    </h2>
+
+                    <p class="text-muted fs-5 mb-4">
+                        Your attendance has been submitted.
+                    </p>
+
+
+                    <!-- Status -->
+
+                    <div class="alert alert-warning
+                                d-flex align-items-center
+                                justify-content-center rounded-3">
+
+                        <i class="bi bi-hourglass-split fs-5 me-2"></i>
+
+                        <strong>
+                            Status: Pending approval
+                        </strong>
+
+                    </div>
+
+
+                    <p class="text-muted small mb-0 mt-4">
+
+                        Your attendance is waiting for administrator
+                        approval.
+
+                    </p>
+
+                </div>
+
+
+                <!-- Footer -->
+
+                <div class="card-footer bg-light border-0 py-3">
+
+                    <small class="text-muted">
+
+                        <i class="bi bi-shield-check me-1"></i>
+
+                        Attendance submitted successfully
+
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

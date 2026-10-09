@@ -1,0 +1,1426 @@
+
+{% extends "base.html" %}
+
+{% block title %}Attendance Approvals{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .approval-page {
+
+        padding: 30px 0 60px;
+
+        animation:
+            pageIn 0.65s ease;
+
+    }
+
+
+    @keyframes pageIn {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(18px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .page-heading {
+
+        display:
+            flex;
+
+        justify-content:
+            space-between;
+
+        align-items:
+            center;
+
+        margin-bottom:
+            32px;
+
+    }
+
+
+    .heading-icon {
+
+        width:
+            58px;
+
+        height:
+            58px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            17px;
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.10);
+
+        border:
+            1px solid
+            rgba(96,165,250,0.14);
+
+        box-shadow:
+            0 12px 35px
+            rgba(59,130,246,0.08);
+
+        font-size:
+            24px;
+
+    }
+
+
+    .page-title {
+
+        color:
+            #f8fafc;
+
+        font-size:
+            1.65rem;
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -0.5px;
+
+    }
+
+
+    .page-subtitle {
+
+        color:
+            #718096;
+
+        font-size:
+            0.8rem;
+
+    }
+
+
+    /* =====================================================
+       STAT CARDS
+    ===================================================== */
+
+    .stat-card {
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        height:
+            100%;
+
+        padding:
+            23px;
+
+        border-radius:
+            19px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.92),
+                rgba(10,18,32,0.92)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.065);
+
+        box-shadow:
+            0 15px 45px
+            rgba(0,0,0,0.18);
+
+        transition:
+            transform 0.3s ease,
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
+
+    }
+
+
+    .stat-card::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            130px;
+
+        height:
+            130px;
+
+        right:
+            -70px;
+
+        top:
+            -70px;
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(255,255,255,0.025);
+
+    }
+
+
+    .stat-card:hover {
+
+        transform:
+            translateY(-5px);
+
+        border-color:
+            rgba(255,255,255,0.12);
+
+        box-shadow:
+            0 22px 55px
+            rgba(0,0,0,0.28);
+
+    }
+
+
+    .stat-icon {
+
+        width:
+            52px;
+
+        height:
+            52px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            15px;
+
+        margin-right:
+            15px;
+
+        font-size:
+            20px;
+
+    }
+
+
+    .stat-warning .stat-icon {
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.10);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.12);
+
+    }
+
+
+    .stat-success .stat-icon {
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.10);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.12);
+
+    }
+
+
+    .stat-danger .stat-icon {
+
+        color:
+            #fb7185;
+
+        background:
+            rgba(244,63,94,0.10);
+
+        border:
+            1px solid
+            rgba(244,63,94,0.12);
+
+    }
+
+
+    .stat-label {
+
+        display:
+            block;
+
+        color:
+            #64748b;
+
+        font-size:
+            0.7rem;
+
+        margin-bottom:
+            2px;
+
+    }
+
+
+    .stat-number {
+
+        color:
+            #f1f5f9;
+
+        font-size:
+            1.65rem;
+
+        font-weight:
+            750;
+
+        line-height:
+            1;
+
+    }
+
+
+    /* =====================================================
+       SECTION HEADER
+    ===================================================== */
+
+    .section-heading {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        margin:
+            42px 0 22px;
+
+    }
+
+
+    .section-title {
+
+        color:
+            #e5e7eb;
+
+        font-size:
+            1.05rem;
+
+        font-weight:
+            700;
+
+        margin:
+            0;
+
+    }
+
+
+    .section-title i {
+
+        color:
+            #60a5fa;
+
+    }
+
+
+    .section-line {
+
+        height:
+            1px;
+
+        flex:
+            1;
+
+        margin-left:
+            20px;
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(255,255,255,0.08),
+                transparent
+            );
+
+    }
+
+
+    /* =====================================================
+       ATTENDANCE CARD
+    ===================================================== */
+
+    .attendance-card {
+
+        position:
+            relative;
+
+        height:
+            100%;
+
+        overflow:
+            hidden;
+
+        padding:
+            23px;
+
+        border-radius:
+            20px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.95),
+                rgba(9,17,30,0.95)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.065);
+
+        box-shadow:
+            0 15px 45px
+            rgba(0,0,0,0.19);
+
+        transition:
+            transform 0.3s ease,
+            border-color 0.3s ease;
+
+        animation:
+            cardAppear 0.55s ease both;
+
+    }
+
+
+    .attendance-card:hover {
+
+        transform:
+            translateY(-6px);
+
+        border-color:
+            rgba(96,165,250,0.18);
+
+    }
+
+
+    @keyframes cardAppear {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(15px);
+
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       STUDENT
+    ===================================================== */
+
+    .student-avatar {
+
+        width:
+            52px;
+
+        height:
+            52px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            15px;
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.10);
+
+        border:
+            1px solid
+            rgba(96,165,250,0.12);
+
+        font-size:
+            20px;
+
+    }
+
+
+    .student-label {
+
+        color:
+            #64748b;
+
+        font-size:
+            0.68rem;
+
+        display:
+            block;
+
+        margin-bottom:
+            2px;
+
+    }
+
+
+    .student-name {
+
+        color:
+            #e5e7eb;
+
+        font-size:
+            0.92rem;
+
+        font-weight:
+            700;
+
+    }
+
+
+    /* =====================================================
+       INFORMATION ROWS
+    ===================================================== */
+
+    .info-row {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            13px;
+
+        margin-bottom:
+            17px;
+
+    }
+
+
+    .info-icon {
+
+        width:
+            39px;
+
+        height:
+            39px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            11px;
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.075);
+
+        border:
+            1px solid
+            rgba(96,165,250,0.09);
+
+        font-size:
+            15px;
+
+    }
+
+
+    .info-label {
+
+        display:
+            block;
+
+        color:
+            #5f6d82;
+
+        font-size:
+            0.65rem;
+
+        margin-bottom:
+            2px;
+
+    }
+
+
+    .info-value {
+
+        color:
+            #cbd5e1;
+
+        font-size:
+            0.76rem;
+
+        font-weight:
+            600;
+
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .status-icon {
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.08);
+
+        border-color:
+            rgba(245,158,11,0.10);
+
+    }
+
+
+    .pending-badge {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            6px;
+
+        padding:
+            6px 10px;
+
+        border-radius:
+            999px;
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.09);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.13);
+
+        font-size:
+            0.65rem;
+
+        font-weight:
+            650;
+
+    }
+
+
+    .pending-dot {
+
+        width:
+            6px;
+
+        height:
+            6px;
+
+        border-radius:
+            50%;
+
+        background:
+            #fbbf24;
+
+        box-shadow:
+            0 0 8px
+            rgba(251,191,36,0.8);
+
+        animation:
+            dotPulse 1.6s
+            infinite;
+
+    }
+
+
+    @keyframes dotPulse {
+
+        0%,100% {
+
+            opacity:
+                1;
+
+        }
+
+        50% {
+
+            opacity:
+                0.35;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       DIVIDER
+    ===================================================== */
+
+    .card-divider {
+
+        height:
+            1px;
+
+        background:
+            rgba(255,255,255,0.055);
+
+        margin:
+            20px 0;
+
+    }
+
+
+    /* =====================================================
+       ACTION BUTTONS
+    ===================================================== */
+
+    .action-btn {
+
+        height:
+            42px;
+
+        border-radius:
+            12px;
+
+        font-size:
+            0.72rem;
+
+        font-weight:
+            650;
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
+
+    }
+
+
+    .action-btn:hover {
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    .approve-btn {
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.09);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.16);
+
+    }
+
+
+    .approve-btn:hover {
+
+        color:
+            #6ee7b7;
+
+        background:
+            rgba(16,185,129,0.15);
+
+        box-shadow:
+            0 8px 22px
+            rgba(16,185,129,0.10);
+
+    }
+
+
+    .reject-btn {
+
+        color:
+            #fb7185;
+
+        background:
+            rgba(244,63,94,0.08);
+
+        border:
+            1px solid
+            rgba(244,63,94,0.15);
+
+    }
+
+
+    .reject-btn:hover {
+
+        color:
+            #fda4af;
+
+        background:
+            rgba(244,63,94,0.14);
+
+        box-shadow:
+            0 8px 22px
+            rgba(244,63,94,0.10);
+
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .empty-card {
+
+        padding:
+            60px 25px;
+
+        text-align:
+            center;
+
+        border-radius:
+            21px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.92),
+                rgba(9,17,30,0.92)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.065);
+
+        box-shadow:
+            0 15px 45px
+            rgba(0,0,0,0.18);
+
+    }
+
+
+    .empty-icon {
+
+        width:
+            82px;
+
+        height:
+            82px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        margin:
+            0 auto 22px;
+
+        border-radius:
+            25px;
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.08);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.13);
+
+        font-size:
+            35px;
+
+        box-shadow:
+            0 15px 35px
+            rgba(16,185,129,0.08);
+
+    }
+
+
+    .empty-title {
+
+        color:
+            #e5e7eb;
+
+        font-size:
+            1rem;
+
+        font-weight:
+            700;
+
+        margin-bottom:
+            7px;
+
+    }
+
+
+    .empty-text {
+
+        max-width:
+            430px;
+
+        margin:
+            auto;
+
+        color:
+            #64748b;
+
+        font-size:
+            0.76rem;
+
+        line-height:
+            1.6;
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 576px) {
+
+        .approval-page {
+
+            padding:
+                20px 0 40px;
+
+        }
+
+
+        .page-heading {
+
+            align-items:
+                flex-start;
+
+        }
+
+
+        .heading-icon {
+
+            width:
+                48px;
+
+            height:
+                48px;
+
+            font-size:
+                20px;
+
+        }
+
+
+        .page-title {
+
+            font-size:
+                1.35rem;
+
+        }
+
+
+        .page-subtitle {
+
+            font-size:
+                0.72rem;
+
+        }
+
+
+        .stat-card {
+
+            padding:
+                19px;
+
+        }
+
+
+        .section-line {
+
+            display:
+                none;
+
+        }
+
+    }
+
+</style>
+
+
+<div class="approval-page">
+
+    <div class="container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================= -->
+
+        <div class="page-heading">
+
+            <div class="d-flex align-items-center gap-3">
+
+                <div class="heading-icon">
+
+                    <i class="bi bi-clipboard-check-fill"></i>
+
+                </div>
+
+                <div>
+
+                    <h1 class="page-title mb-1">
+
+                        Attendance Approvals
+
+                    </h1>
+
+                    <p class="page-subtitle mb-0">
+
+                        Review and manage student attendance records.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+        ================================================= -->
+
+        <div class="row g-3">
+
+
+            <!-- Pending -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card stat-warning">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-hourglass-split"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span class="stat-label">
+
+                                Pending
+
+                            </span>
+
+                            <span class="stat-number">
+
+                                {{ summary.pending }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Approved -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card stat-success">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span class="stat-label">
+
+                                Approved
+
+                            </span>
+
+                            <span class="stat-number">
+
+                                {{ summary.approved }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Rejected -->
+
+            <div class="col-md-4">
+
+                <div class="stat-card stat-danger">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="stat-icon">
+
+                            <i class="bi bi-x-circle-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <span class="stat-label">
+
+                                Rejected
+
+                            </span>
+
+                            <span class="stat-number">
+
+                                {{ summary.rejected }}
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PENDING SECTION
+        ================================================= -->
+
+        <div class="section-heading">
+
+            <h2 class="section-title">
+
+                <i class="bi bi-list-check me-2"></i>
+
+                Pending Attendance
+
+            </h2>
+
+            <div class="section-line"></div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+
+            {% for record in pending_records %}
+
+
+                <div class="col-md-6 col-lg-4">
+
+
+                    <div class="attendance-card">
+
+
+                        <!-- STUDENT -->
+
+                        <div class="d-flex align-items-center mb-4">
+
+                            <div class="student-avatar me-3">
+
+                                <i class="bi bi-person-fill"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span class="student-label">
+
+                                    Student
+
+                                </span>
+
+                                <div class="student-name">
+
+                                    {{ record.student.username }}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="info-row">
+
+                            <div class="info-icon">
+
+                                <i class="bi bi-calendar-event"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span class="info-label">
+
+                                    Attendance Date
+
+                                </span>
+
+                                <span class="info-value">
+
+                                    {{ record.attendance_date }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- STATUS -->
+
+                        <div class="info-row mb-0">
+
+                            <div class="info-icon status-icon">
+
+                                <i class="bi bi-clock-history"></i>
+
+                            </div>
+
+                            <div>
+
+                                <span class="info-label">
+
+                                    Status
+
+                                </span>
+
+                                <span class="pending-badge">
+
+                                    <span class="pending-dot"></span>
+
+                                    {{ record.get_status_display }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card-divider"></div>
+
+
+                        <!-- ACTIONS -->
+
+                        <div class="row g-2">
+
+
+                            <!-- APPROVE -->
+
+                            <div class="col-6">
+
+                                <form method="post"
+                                      action="{% url 'approve_attendance' record.id %}">
+
+                                    {% csrf_token %}
+
+                                    <button type="submit"
+                                            class="btn action-btn approve-btn w-100">
+
+                                        <i class="bi bi-check-circle-fill me-1"></i>
+
+                                        Approve
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                            <!-- REJECT -->
+
+                            <div class="col-6">
+
+                                <form method="post"
+                                      action="{% url 'reject_attendance' record.id %}">
+
+                                    {% csrf_token %}
+
+                                    <button type="submit"
+                                            class="btn action-btn reject-btn w-100">
+
+                                        <i class="bi bi-x-circle-fill me-1"></i>
+
+                                        Reject
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+
+                <!-- =================================================
+                     EMPTY STATE
+                ================================================= -->
+
+                <div class="col-12">
+
+                    <div class="empty-card">
+
+                        <div class="empty-icon">
+
+                            <i class="bi bi-check-circle-fill"></i>
+
+                        </div>
+
+
+                        <h3 class="empty-title">
+
+                            No Pending Attendance
+
+                        </h3>
+
+
+                        <p class="empty-text">
+
+                            There are currently no attendance records
+                            waiting for approval.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

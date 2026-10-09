@@ -1,0 +1,934 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Attendance{% endblock %}
+
+{% block content %}
+
+<style>
+    /* =========================================================
+       PREMIUM ATTENDANCE PAGE
+       ========================================================= */
+
+    .attendance-page {
+        min-height: calc(100vh - 100px);
+        padding: 35px 0 60px;
+    }
+
+    /* Main Card */
+    .attendance-card {
+        background: #111827;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 28px;
+        overflow: hidden;
+        box-shadow:
+            0 25px 70px rgba(0, 0, 0, 0.45),
+            0 0 0 1px rgba(255, 255, 255, 0.02);
+        animation: fadeUp 0.7s ease;
+    }
+
+    /* Header */
+    .attendance-header {
+        position: relative;
+        padding: 38px 25px;
+        text-align: center;
+        background:
+            radial-gradient(circle at 50% 0%,
+            rgba(59, 130, 246, 0.22),
+            transparent 55%),
+            #111827;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .header-icon {
+        width: 78px;
+        height: 78px;
+        margin: auto;
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(59, 130, 246, 0.12);
+        border: 1px solid rgba(96, 165, 250, 0.25);
+        color: #60a5fa;
+        font-size: 34px;
+        box-shadow: 0 0 35px rgba(59, 130, 246, 0.18);
+        animation: floating 3s ease-in-out infinite;
+    }
+
+    .attendance-header h2 {
+        color: #f8fafc;
+        margin-top: 20px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .attendance-header p {
+        color: #94a3b8;
+    }
+
+    /* Student Information */
+    .student-box {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 17px 20px;
+        border-radius: 16px;
+        background: rgba(59, 130, 246, 0.07);
+        border: 1px solid rgba(96, 165, 250, 0.13);
+        margin-bottom: 30px;
+    }
+
+    .student-icon {
+        width: 48px;
+        height: 48px;
+        flex-shrink: 0;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(59, 130, 246, 0.14);
+        color: #60a5fa;
+        font-size: 22px;
+    }
+
+    .student-label {
+        color: #64748b;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .student-name {
+        color: #f1f5f9;
+        font-weight: 700;
+    }
+
+    /* Verification Heading */
+    .verification-title {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .verification-title h4 {
+        color: #f8fafc;
+        font-weight: 800;
+    }
+
+    .verification-title p {
+        color: #94a3b8;
+    }
+
+    .verification-title i {
+        color: #60a5fa;
+    }
+
+    /* =========================================================
+       ONE CAMERA / PREVIEW BOX
+       ========================================================= */
+
+    .camera-wrapper {
+        max-width: 650px;
+        margin: 0 auto;
+    }
+
+    .camera-box {
+        position: relative;
+        background: #030712;
+        border-radius: 24px;
+        overflow: hidden;
+        border: 1px solid rgba(96, 165, 250, 0.18);
+        box-shadow:
+            inset 0 0 40px rgba(0, 0, 0, 0.55),
+            0 20px 50px rgba(0, 0, 0, 0.35);
+    }
+
+    .camera-topbar {
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        background: rgba(15, 23, 42, 0.92);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .camera-title {
+        color: #e2e8f0;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .camera-title i {
+        color: #60a5fa;
+    }
+
+    .camera-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 5px 10px;
+        border-radius: 50px;
+        background: rgba(100, 116, 139, 0.12);
+        color: #94a3b8;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.7px;
+    }
+
+    .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #64748b;
+    }
+
+    .camera-status.live {
+        color: #4ade80;
+        background: rgba(34, 197, 94, 0.1);
+    }
+
+    .camera-status.live .status-dot {
+        background: #22c55e;
+        box-shadow: 0 0 10px #22c55e;
+        animation: pulseDot 1.4s infinite;
+    }
+
+    .camera-status.captured {
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.1);
+    }
+
+    .camera-status.captured .status-dot {
+        background: #3b82f6;
+        box-shadow: 0 0 10px #3b82f6;
+    }
+
+    /* Media Area */
+    .camera-stage {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        background: #020617;
+        overflow: hidden;
+    }
+
+    #camera,
+    #preview {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 0;
+    }
+
+    #preview {
+        display: none;
+    }
+
+    /* Face Scanner Frame */
+    .face-frame {
+        position: absolute;
+        width: 48%;
+        height: 68%;
+        left: 26%;
+        top: 16%;
+        border: 2px solid rgba(96, 165, 250, 0.65);
+        border-radius: 48% 48% 45% 45%;
+        pointer-events: none;
+        box-shadow:
+            0 0 20px rgba(59, 130, 246, 0.1),
+            inset 0 0 20px rgba(59, 130, 246, 0.05);
+        transition: 0.4s;
+    }
+
+    .face-frame::before {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        height: 2px;
+        top: 15%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            #60a5fa,
+            transparent
+        );
+        opacity: 0;
+    }
+
+    .camera-live .face-frame::before {
+        opacity: 1;
+        animation: scanLine 2.5s ease-in-out infinite;
+    }
+
+    /* Corner decorations */
+    .corner {
+        position: absolute;
+        width: 28px;
+        height: 28px;
+        border-color: #60a5fa;
+        border-style: solid;
+    }
+
+    .corner-tl {
+        top: 18px;
+        left: 18px;
+        border-width: 2px 0 0 2px;
+    }
+
+    .corner-tr {
+        top: 18px;
+        right: 18px;
+        border-width: 2px 2px 0 0;
+    }
+
+    .corner-bl {
+        bottom: 18px;
+        left: 18px;
+        border-width: 0 0 2px 2px;
+    }
+
+    .corner-br {
+        bottom: 18px;
+        right: 18px;
+        border-width: 0 2px 2px 0;
+    }
+
+    /* Empty camera state */
+    .camera-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #64748b;
+        background:
+            radial-gradient(
+                circle at center,
+                rgba(59, 130, 246, 0.07),
+                transparent 55%
+            );
+    }
+
+    .camera-placeholder i {
+        font-size: 52px;
+        color: #334155;
+        margin-bottom: 12px;
+    }
+
+    .camera-placeholder strong {
+        color: #94a3b8;
+    }
+
+    /* Controls */
+    .camera-controls {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 22px;
+        background: #0f172a;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .premium-btn {
+        border: 0;
+        border-radius: 13px;
+        padding: 12px 22px;
+        font-weight: 700;
+        transition: all 0.3s ease;
+    }
+
+    .btn-camera {
+        background: #2563eb;
+        color: white;
+        box-shadow: 0 8px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-camera:hover {
+        background: #3b82f6;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+    }
+
+    .btn-capture {
+        background: #10b981;
+        color: white;
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.2);
+    }
+
+    .btn-capture:hover {
+        background: #34d399;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(16, 185, 129, 0.3);
+    }
+
+    /* Message */
+    #message {
+        min-height: 25px;
+        color: #34d399;
+        transition: 0.3s;
+    }
+
+    /* Submit */
+    .submit-section {
+        max-width: 650px;
+        margin: 30px auto 0;
+    }
+
+    .submit-btn {
+        border: 0;
+        width: 100%;
+        padding: 15px;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: white;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        box-shadow: 0 12px 35px rgba(37, 99, 235, 0.25);
+        transition: all 0.3s ease;
+    }
+
+    .submit-btn:hover {
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(37, 99, 235, 0.35);
+    }
+
+    .security-note {
+        color: #64748b;
+        font-size: 12px;
+    }
+
+    /* Error */
+    .premium-error {
+        background: rgba(239, 68, 68, 0.08);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.15);
+        border-radius: 15px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(25px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes floating {
+        0%, 100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-6px);
+        }
+    }
+
+    @keyframes pulseDot {
+        0%, 100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.35;
+        }
+    }
+
+    @keyframes scanLine {
+        0% {
+            top: 15%;
+        }
+
+        50% {
+            top: 80%;
+        }
+
+        100% {
+            top: 15%;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 576px) {
+
+        .attendance-page {
+            padding: 15px 0 40px;
+        }
+
+        .attendance-card {
+            border-radius: 20px;
+        }
+
+        .attendance-header {
+            padding: 30px 18px;
+        }
+
+        .attendance-header h2 {
+            font-size: 24px;
+        }
+
+        .camera-controls {
+            padding: 16px;
+        }
+
+        .premium-btn {
+            width: 100%;
+        }
+
+        .face-frame {
+            width: 58%;
+            left: 21%;
+        }
+    }
+</style>
+
+
+<div class="attendance-page">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-xl-8 col-lg-9">
+
+                <div class="attendance-card">
+
+                    <!-- ================= HEADER ================= -->
+
+                    <div class="attendance-header">
+
+                        <div class="header-icon">
+                            <i class="bi bi-camera-fill"></i>
+                        </div>
+
+                        <h2>
+                            Submit Attendance
+                        </h2>
+
+                        <p class="mb-0">
+                            Secure facial verification for today's attendance
+                        </p>
+
+                    </div>
+
+
+                    <!-- ================= CONTENT ================= -->
+
+                    <div class="p-4 p-md-5">
+
+                        <!-- Student -->
+
+                        <div class="student-box">
+
+                            <div class="student-icon">
+                                <i class="bi bi-person-fill"></i>
+                            </div>
+
+                            <div>
+
+                                <div class="student-label">
+                                    Logged in as
+                                </div>
+
+                                <div class="student-name">
+                                    {{ user.username }}
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% if error %}
+
+                        <!-- ERROR -->
+
+                        <div class="premium-error p-4 mb-4">
+
+                            <div class="d-flex align-items-center">
+
+                                <i class="bi bi-exclamation-triangle-fill fs-4 me-3"></i>
+
+                                <div>
+                                    <strong>Attendance Error</strong>
+
+                                    <div class="small mt-1">
+                                        {{ error }}
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        {% else %}
+
+
+                        <!-- ================= VERIFICATION ================= -->
+
+                        <div class="verification-title">
+
+                            <h4>
+                                <i class="bi bi-person-bounding-box me-2"></i>
+                                Face Verification
+                            </h4>
+
+                            <p class="mb-0">
+                                Position your face inside the frame and capture your image.
+                            </p>
+
+                        </div>
+
+
+                        <!-- ================= ONE CAMERA BOX ================= -->
+
+                        <div class="camera-wrapper">
+
+                            <div class="camera-box">
+
+                                <!-- Top Bar -->
+
+                                <div class="camera-topbar">
+
+                                    <div class="camera-title">
+
+                                        <i class="bi bi-camera-video-fill me-2"></i>
+
+                                        Facial Camera
+
+                                    </div>
+
+                                    <div id="cameraStatus"
+                                         class="camera-status">
+
+                                        <span class="status-dot"></span>
+
+                                        READY
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- Media -->
+
+                                <div id="cameraStage"
+                                     class="camera-stage">
+
+                                    <!-- Camera -->
+
+                                    <video id="camera"
+                                           autoplay
+                                           playsinline>
+                                    </video>
+
+
+                                    <!-- Preview -->
+
+                                    <canvas id="preview">
+                                    </canvas>
+
+
+                                    <!-- Placeholder -->
+
+                                    <div id="cameraPlaceholder"
+                                         class="camera-placeholder">
+
+                                        <i class="bi bi-camera-video"></i>
+
+                                        <strong>Camera not started</strong>
+
+                                        <small class="mt-1">
+                                            Click "Start Camera" to begin
+                                        </small>
+
+                                    </div>
+
+
+                                    <!-- Face Frame -->
+
+                                    <div class="face-frame"></div>
+
+
+                                    <!-- Corners -->
+
+                                    <div class="corner corner-tl"></div>
+                                    <div class="corner corner-tr"></div>
+                                    <div class="corner corner-bl"></div>
+                                    <div class="corner corner-br"></div>
+
+                                </div>
+
+
+                                <!-- Controls -->
+
+                                <div class="camera-controls">
+
+                                    <button type="button"
+                                            id="startCamera"
+                                            class="premium-btn btn-camera">
+
+                                        <i class="bi bi-camera-video-fill me-2"></i>
+
+                                        Start Camera
+
+                                    </button>
+
+
+                                    <button type="button"
+                                            id="capture"
+                                            class="premium-btn btn-capture">
+
+                                        <i class="bi bi-camera-fill me-2"></i>
+
+                                        Capture Image
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Message -->
+
+                        <div class="text-center mt-3">
+
+                            <p id="message"
+                               class="fw-semibold mb-0">
+                            </p>
+
+                        </div>
+
+
+                        <!-- ================= SUBMIT ================= -->
+
+                        <form method="post"
+                              enctype="multipart/form-data"
+                              class="submit-section">
+
+                            {% csrf_token %}
+
+                            <input type="file"
+                                   name="face_image"
+                                   id="faceImage"
+                                   hidden>
+
+
+                            <button type="submit"
+                                    class="submit-btn">
+
+                                <i class="bi bi-shield-check me-2"></i>
+
+                                Submit Attendance Securely
+
+                            </button>
+
+                        </form>
+
+
+                        <!-- Security -->
+
+                        <div class="text-center mt-4">
+
+                            <div class="security-note">
+
+                                <i class="bi bi-lock-fill me-1"></i>
+
+                                Your captured image is securely used for
+                                attendance verification.
+
+                            </div>
+
+                        </div>
+
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const camera = document.getElementById("camera");
+    const preview = document.getElementById("preview");
+    const faceImage = document.getElementById("faceImage");
+
+    const startCamera = document.getElementById("startCamera");
+    const capture = document.getElementById("capture");
+
+    const message = document.getElementById("message");
+    const cameraStatus = document.getElementById("cameraStatus");
+    const cameraStage = document.getElementById("cameraStage");
+    const cameraPlaceholder = document.getElementById("cameraPlaceholder");
+
+
+    let stream = null;
+
+
+    /* =========================================================
+       START CAMERA
+       ========================================================= */
+
+    startCamera.onclick = async function () {
+
+        try {
+
+            stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "user"
+                },
+                audio: false
+            });
+
+            camera.srcObject = stream;
+
+            cameraPlaceholder.style.display = "none";
+
+            camera.style.display = "block";
+
+            preview.style.display = "none";
+
+            cameraStage.classList.add("camera-live");
+
+            cameraStatus.className = "camera-status live";
+
+            cameraStatus.innerHTML =
+                '<span class="status-dot"></span> LIVE';
+
+            message.textContent =
+                "Camera is active. Position your face inside the frame.";
+
+            message.style.color = "#34d399";
+
+        }
+
+        catch (error) {
+
+            message.textContent =
+                "Unable to access camera. Please allow camera permission.";
+
+            message.style.color = "#f87171";
+
+        }
+
+    };
+
+
+    /* =========================================================
+       CAPTURE IMAGE
+       ========================================================= */
+
+    capture.onclick = function () {
+
+        if (!stream) {
+
+            message.textContent =
+                "Please start the camera first.";
+
+            message.style.color = "#fbbf24";
+
+            return;
+
+        }
+
+
+        const context = preview.getContext("2d");
+
+        preview.width = camera.videoWidth || 400;
+        preview.height = camera.videoHeight || 300;
+
+
+        context.drawImage(
+            camera,
+            0,
+            0,
+            preview.width,
+            preview.height
+        );
+
+
+        preview.toBlob(function (blob) {
+
+            const file = new File(
+                [blob],
+                "face.jpg",
+                {
+                    type: "image/jpeg"
+                }
+            );
+
+
+            const data = new DataTransfer();
+
+            data.items.add(file);
+
+            faceImage.files = data.files;
+
+
+            /* Stop camera */
+
+            stream.getTracks().forEach(
+                track => track.stop()
+            );
+
+            camera.srcObject = null;
+
+
+            /* Show captured image */
+
+            camera.style.display = "none";
+
+            preview.style.display = "block";
+
+            cameraStage.classList.remove("camera-live");
+
+
+            /* Status */
+
+            cameraStatus.className =
+                "camera-status captured";
+
+            cameraStatus.innerHTML =
+                '<span class="status-dot"></span> CAPTURED';
+
+
+            message.textContent =
+                "Image captured successfully. You can now submit your attendance.";
+
+            message.style.color = "#34d399";
+
+        }, "image/jpeg", 0.92);
+
+    };
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,1120 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Registration Successful{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       SUCCESS PAGE
+    ===================================================== */
+
+    .success-page {
+
+        min-height:
+            calc(100vh - 180px);
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        padding:
+            35px 15px 60px;
+
+        animation:
+            pageReveal 0.7s ease;
+
+    }
+
+
+    @keyframes pageReveal {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(20px);
+
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       MAIN CARD
+    ===================================================== */
+
+    .success-card {
+
+        width:
+            100%;
+
+        max-width:
+            650px;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        border-radius:
+            26px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.97),
+                rgba(8,15,27,0.97)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.08);
+
+        box-shadow:
+            0 30px 90px
+            rgba(0,0,0,0.42);
+
+    }
+
+
+    /* =====================================================
+       TOP GRADIENT
+    ===================================================== */
+
+    .success-accent {
+
+        height:
+            4px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #10b981,
+                #06b6d4,
+                #3b82f6
+            );
+
+        background-size:
+            200% 100%;
+
+        animation:
+            accentMove 5s ease infinite;
+
+    }
+
+
+    @keyframes accentMove {
+
+        0% {
+
+            background-position:
+                0% 50%;
+
+        }
+
+        50% {
+
+            background-position:
+                100% 50%;
+
+        }
+
+        100% {
+
+            background-position:
+                0% 50%;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SUCCESS HEADER
+    ===================================================== */
+
+    .success-header {
+
+        position:
+            relative;
+
+        text-align:
+            center;
+
+        padding:
+            45px 25px 38px;
+
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                rgba(16,185,129,0.13),
+                transparent 60%
+            );
+
+        overflow:
+            hidden;
+
+    }
+
+
+    .success-header::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            230px;
+
+        height:
+            230px;
+
+        top:
+            -150px;
+
+        left:
+            50%;
+
+        transform:
+            translateX(-50%);
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(16,185,129,0.08);
+
+        filter:
+            blur(35px);
+
+    }
+
+
+    /* =====================================================
+       SUCCESS ICON
+    ===================================================== */
+
+    .success-icon {
+
+        position:
+            relative;
+
+        width:
+            88px;
+
+        height:
+            88px;
+
+        margin:
+            0 auto 22px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            28px;
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.10);
+
+        border:
+            1px solid
+            rgba(52,211,153,0.18);
+
+        font-size:
+            40px;
+
+        box-shadow:
+            0 0 0 8px
+            rgba(16,185,129,0.025),
+
+            0 18px 45px
+            rgba(16,185,129,0.12);
+
+        animation:
+            successPop 0.8s
+            cubic-bezier(.17,.67,.35,1.35);
+
+    }
+
+
+    @keyframes successPop {
+
+        0% {
+
+            opacity:
+                0;
+
+            transform:
+                scale(0.45)
+                rotate(-15deg);
+
+        }
+
+        70% {
+
+            transform:
+                scale(1.08)
+                rotate(2deg);
+
+        }
+
+        100% {
+
+            opacity:
+                1;
+
+            transform:
+                scale(1)
+                rotate(0);
+
+        }
+
+    }
+
+
+    .success-icon::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        inset:
+            -9px;
+
+        border-radius:
+            31px;
+
+        border:
+            1px solid
+            rgba(52,211,153,0.12);
+
+        animation:
+            iconRing 2.5s
+            ease-out infinite;
+
+    }
+
+
+    @keyframes iconRing {
+
+        0% {
+
+            opacity:
+                0.8;
+
+            transform:
+                scale(0.95);
+
+        }
+
+        100% {
+
+            opacity:
+                0;
+
+            transform:
+                scale(1.18);
+
+        }
+
+    }
+
+
+    .success-title {
+
+        position:
+            relative;
+
+        color:
+            #f8fafc;
+
+        font-size:
+            1.65rem;
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -0.6px;
+
+        margin:
+            0 0 7px;
+
+    }
+
+
+    .success-subtitle {
+
+        position:
+            relative;
+
+        color:
+            #718096;
+
+        font-size:
+            0.84rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .success-body {
+
+        padding:
+            10px 38px 35px;
+
+    }
+
+
+    .account-created {
+
+        text-align:
+            center;
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            1.05rem;
+
+        font-weight:
+            650;
+
+        margin:
+            0 0 25px;
+
+    }
+
+
+    .account-created i {
+
+        color:
+            #60a5fa;
+
+    }
+
+
+    /* =====================================================
+       WAITING ALERT
+    ===================================================== */
+
+    .waiting-alert {
+
+        display:
+            flex;
+
+        align-items:
+            flex-start;
+
+        gap:
+            13px;
+
+        padding:
+            17px;
+
+        margin-bottom:
+            25px;
+
+        border-radius:
+            15px;
+
+        color:
+            #fcd34d;
+
+        background:
+            rgba(245,158,11,0.07);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.13);
+
+    }
+
+
+    .waiting-icon {
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            12px;
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.10);
+
+        font-size:
+            17px;
+
+        animation:
+            waitingPulse 2s
+            ease-in-out infinite;
+
+    }
+
+
+    @keyframes waitingPulse {
+
+        0%,100% {
+
+            transform:
+                rotate(0deg);
+
+        }
+
+        50% {
+
+            transform:
+                rotate(8deg);
+
+        }
+
+    }
+
+
+    .waiting-title {
+
+        color:
+            #fcd34d;
+
+        font-size:
+            0.84rem;
+
+        font-weight:
+            700;
+
+        margin:
+            0 0 4px;
+
+    }
+
+
+    .waiting-text {
+
+        color:
+            #8b7b55;
+
+        font-size:
+            0.74rem;
+
+        line-height:
+            1.5;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .login-message {
+
+        text-align:
+            center;
+
+        color:
+            #718096;
+
+        font-size:
+            0.78rem;
+
+        margin:
+            0 0 27px;
+
+    }
+
+
+    /* =====================================================
+       STEPS
+    ===================================================== */
+
+    .steps-container {
+
+        position:
+            relative;
+
+        margin-bottom:
+            25px;
+
+    }
+
+
+    .steps-container::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        left:
+            20px;
+
+        top:
+            40px;
+
+        bottom:
+            40px;
+
+        width:
+            1px;
+
+        background:
+            linear-gradient(
+                to bottom,
+                rgba(16,185,129,0.35),
+                rgba(245,158,11,0.25),
+                rgba(59,130,246,0.25)
+            );
+
+    }
+
+
+    .step {
+
+        position:
+            relative;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            14px;
+
+        padding:
+            11px 0;
+
+    }
+
+
+    .step-icon {
+
+        position:
+            relative;
+
+        z-index:
+            2;
+
+        width:
+            40px;
+
+        height:
+            40px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            12px;
+
+        font-size:
+            15px;
+
+    }
+
+
+    .step-complete {
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.09);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.13);
+
+    }
+
+
+    .step-waiting {
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.09);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.13);
+
+        animation:
+            stepGlow 2s
+            ease-in-out infinite;
+
+    }
+
+
+    @keyframes stepGlow {
+
+        0%,100% {
+
+            box-shadow:
+                0 0 0
+                rgba(245,158,11,0);
+
+        }
+
+        50% {
+
+            box-shadow:
+                0 0 18px
+                rgba(245,158,11,0.10);
+
+        }
+
+    }
+
+
+    .step-login {
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.09);
+
+        border:
+            1px solid
+            rgba(59,130,246,0.13);
+
+    }
+
+
+    .step-title {
+
+        display:
+            block;
+
+        color:
+            #dbe4ef;
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            650;
+
+        margin-bottom:
+            3px;
+
+    }
+
+
+    .step-description {
+
+        color:
+            #627086;
+
+        font-size:
+            0.7rem;
+
+        line-height:
+            1.4;
+
+    }
+
+
+    /* =====================================================
+       INFO MESSAGE
+    ===================================================== */
+
+    .info-message {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            10px;
+
+        padding:
+            13px 15px;
+
+        border-radius:
+            12px;
+
+        color:
+            #7dd3fc;
+
+        background:
+            rgba(14,165,233,0.06);
+
+        border:
+            1px solid
+            rgba(14,165,233,0.11);
+
+        font-size:
+            0.71rem;
+
+    }
+
+
+    .info-message i {
+
+        font-size:
+            16px;
+
+        flex-shrink:
+            0;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 576px) {
+
+        .success-page {
+
+            padding:
+                20px 10px 40px;
+
+        }
+
+
+        .success-card {
+
+            border-radius:
+                21px;
+
+        }
+
+
+        .success-header {
+
+            padding:
+                38px 20px 30px;
+
+        }
+
+
+        .success-body {
+
+            padding:
+                8px 22px 28px;
+
+        }
+
+
+        .success-icon {
+
+            width:
+                78px;
+
+            height:
+                78px;
+
+            font-size:
+                34px;
+
+        }
+
+
+        .success-title {
+
+            font-size:
+                1.4rem;
+
+        }
+
+    }
+
+</style>
+
+
+<div class="success-page">
+
+    <div class="success-card">
+
+        <!-- Animated top accent -->
+
+        <div class="success-accent"></div>
+
+
+        <!-- =================================================
+             SUCCESS HEADER
+        ================================================= -->
+
+        <div class="success-header">
+
+            <div class="success-icon">
+
+                <i class="bi bi-check-lg"></i>
+
+            </div>
+
+
+            <h1 class="success-title">
+
+                Registration Successful!
+
+            </h1>
+
+
+            <p class="success-subtitle">
+
+                Your registration has been completed successfully.
+
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             CONTENT
+        ================================================= -->
+
+        <div class="success-body">
+
+
+            <h2 class="account-created">
+
+                <i class="bi bi-mortarboard-fill me-2"></i>
+
+                Your student account has been created
+
+            </h2>
+
+
+            <!-- WAITING FOR APPROVAL -->
+
+            <div class="waiting-alert">
+
+                <div class="waiting-icon">
+
+                    <i class="bi bi-hourglass-split"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h3 class="waiting-title">
+
+                        Waiting for Approval
+
+                    </h3>
+
+
+                    <p class="waiting-text">
+
+                        Your account is waiting for superadmin approval.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <p class="login-message">
+
+                You can log in after your account has been approved.
+
+            </p>
+
+
+            <!-- =================================================
+                 PROCESS STEPS
+            ================================================= -->
+
+            <div class="steps-container">
+
+
+                <!-- STEP 1 -->
+
+                <div class="step">
+
+                    <div class="step-icon step-complete">
+
+                        <i class="bi bi-check-lg"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="step-title">
+
+                            Registration completed
+
+                        </span>
+
+
+                        <span class="step-description">
+
+                            Your student account has been created.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 2 -->
+
+                <div class="step">
+
+                    <div class="step-icon step-waiting">
+
+                        <i class="bi bi-hourglass-split"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="step-title">
+
+                            Superadmin approval
+
+                        </span>
+
+
+                        <span class="step-description">
+
+                            Your account is currently waiting for approval.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STEP 3 -->
+
+                <div class="step">
+
+                    <div class="step-icon step-login">
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span class="step-title">
+
+                            Login
+
+                        </span>
+
+
+                        <span class="step-description">
+
+                            Login after your account is approved.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INFORMATION -->
+
+            <div class="info-message">
+
+                <i class="bi bi-info-circle-fill"></i>
+
+                <span>
+
+                    Please wait for the superadmin to approve your account.
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+

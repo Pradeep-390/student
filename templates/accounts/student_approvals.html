@@ -1,0 +1,1298 @@
+{% extends "base.html" %}
+
+{% block title %}Student Approvals | Student Attendance{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       STUDENT APPROVALS
+    ===================================================== */
+
+    .approvals-page {
+
+        padding:
+            30px 0 55px;
+
+        animation:
+            pageEnter 0.6s ease;
+
+    }
+
+
+    @keyframes pageEnter {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(15px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       PAGE HEADER
+    ===================================================== */
+
+    .approvals-header {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            space-between;
+
+        gap:
+            20px;
+
+        margin-bottom:
+            30px;
+
+        padding:
+            25px 28px;
+
+        border-radius:
+            20px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.92),
+                rgba(9,16,29,0.92)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.07);
+
+        box-shadow:
+            0 15px 45px
+            rgba(0,0,0,0.25);
+
+    }
+
+
+    .header-left {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            15px;
+
+    }
+
+
+    .header-icon {
+
+        width:
+            54px;
+
+        height:
+            54px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            15px;
+
+        color:
+            #93c5fd;
+
+        background:
+            rgba(59,130,246,0.10);
+
+        border:
+            1px solid
+            rgba(59,130,246,0.14);
+
+        font-size:
+            22px;
+
+        box-shadow:
+            0 8px 25px
+            rgba(37,99,235,0.08);
+
+    }
+
+
+    .page-title {
+
+        color:
+            #f8fafc;
+
+        font-size:
+            1.45rem;
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -0.5px;
+
+        margin:
+            0 0 5px;
+
+    }
+
+
+    .page-description {
+
+        color:
+            #718096;
+
+        font-size:
+            0.82rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       PENDING BADGE
+    ===================================================== */
+
+    .pending-count {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            7px;
+
+        padding:
+            9px 14px;
+
+        border-radius:
+            999px;
+
+        color:
+            #fcd34d;
+
+        background:
+            rgba(245,158,11,0.09);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.15);
+
+        font-size:
+            0.76rem;
+
+        font-weight:
+            650;
+
+        white-space:
+            nowrap;
+
+    }
+
+
+    .pending-dot {
+
+        width:
+            7px;
+
+        height:
+            7px;
+
+        border-radius:
+            50%;
+
+        background:
+            #f59e0b;
+
+        box-shadow:
+            0 0 0 4px
+            rgba(245,158,11,0.08);
+
+        animation:
+            pendingPulse 2s infinite;
+
+    }
+
+
+    @keyframes pendingPulse {
+
+        0%,100% {
+
+            opacity:
+                1;
+
+        }
+
+        50% {
+
+            opacity:
+                0.35;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       STUDENT CARD
+    ===================================================== */
+
+    .student-card {
+
+        height:
+            100%;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        border-radius:
+            20px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.95),
+                rgba(9,16,29,0.95)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.07);
+
+        box-shadow:
+            0 12px 40px
+            rgba(0,0,0,0.22);
+
+        transition:
+            0.35s
+            cubic-bezier(.2,.8,.2,1);
+
+        animation:
+            cardEnter 0.6s ease both;
+
+    }
+
+
+    .student-card:hover {
+
+        transform:
+            translateY(-7px);
+
+        border-color:
+            rgba(59,130,246,0.18);
+
+        box-shadow:
+            0 22px 55px
+            rgba(0,0,0,0.35);
+
+    }
+
+
+    .student-card::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            140px;
+
+        height:
+            140px;
+
+        top:
+            -90px;
+
+        right:
+            -80px;
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(59,130,246,0.07);
+
+        filter:
+            blur(25px);
+
+        transition:
+            0.4s ease;
+
+    }
+
+
+    .student-card:hover::before {
+
+        transform:
+            scale(1.5);
+
+    }
+
+
+    @keyframes cardEnter {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(18px);
+
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CARD BODY
+    ===================================================== */
+
+    .student-card-body {
+
+        padding:
+            25px;
+
+    }
+
+
+    /* =====================================================
+       STUDENT HEADER
+    ===================================================== */
+
+    .student-header {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            13px;
+
+        margin-bottom:
+            25px;
+
+    }
+
+
+    .student-avatar {
+
+        width:
+            55px;
+
+        height:
+            55px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            16px;
+
+        color:
+            #93c5fd;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(37,99,235,0.18),
+                rgba(99,102,241,0.13)
+            );
+
+        border:
+            1px solid
+            rgba(96,165,250,0.12);
+
+        font-size:
+            23px;
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .student-card:hover .student-avatar {
+
+        transform:
+            scale(1.06)
+            rotate(-2deg);
+
+    }
+
+
+    .student-name {
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            0.98rem;
+
+        font-weight:
+            700;
+
+        margin:
+            0 0 6px;
+
+        word-break:
+            break-word;
+
+    }
+
+
+    /* =====================================================
+       STATUS
+    ===================================================== */
+
+    .status-badge {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            6px;
+
+        padding:
+            5px 9px;
+
+        border-radius:
+            999px;
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.08);
+
+        border:
+            1px solid
+            rgba(245,158,11,0.13);
+
+        font-size:
+            0.67rem;
+
+        font-weight:
+            650;
+
+    }
+
+
+    .status-badge i {
+
+        font-size:
+            0.65rem;
+
+    }
+
+
+    /* =====================================================
+       STUDENT INFORMATION
+    ===================================================== */
+
+    .student-info {
+
+        display:
+            flex;
+
+        flex-direction:
+            column;
+
+        gap:
+            16px;
+
+    }
+
+
+    .info-row {
+
+        display:
+            flex;
+
+        align-items:
+            flex-start;
+
+        gap:
+            11px;
+
+    }
+
+
+    .info-icon {
+
+        width:
+            34px;
+
+        height:
+            34px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            9px;
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.07);
+
+        font-size:
+            13px;
+
+    }
+
+
+    .info-label {
+
+        display:
+            block;
+
+        color:
+            #59687c;
+
+        font-size:
+            0.65rem;
+
+        font-weight:
+            600;
+
+        text-transform:
+            uppercase;
+
+        letter-spacing:
+            0.6px;
+
+        margin-bottom:
+            3px;
+
+    }
+
+
+    .info-value {
+
+        display:
+            block;
+
+        color:
+            #cbd5e1;
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            500;
+
+        line-height:
+            1.45;
+
+        word-break:
+            break-word;
+
+    }
+
+
+    /* =====================================================
+       DIVIDER
+    ===================================================== */
+
+    .student-divider {
+
+        height:
+            1px;
+
+        margin:
+            22px 0;
+
+        background:
+            rgba(255,255,255,0.06);
+
+    }
+
+
+    /* =====================================================
+       APPROVE BUTTON
+    ===================================================== */
+
+    .approve-btn {
+
+        width:
+            100%;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            8px;
+
+        padding:
+            11px 15px;
+
+        border:
+            1px solid
+            rgba(16,185,129,0.18);
+
+        border-radius:
+            10px;
+
+        color:
+            #86efac;
+
+        background:
+            rgba(16,185,129,0.08);
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            650;
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .approve-btn::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        left:
+            -120%;
+
+        top:
+            0;
+
+        width:
+            70%;
+
+        height:
+            100%;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,0.16),
+                transparent
+            );
+
+        transform:
+            skewX(-20deg);
+
+        transition:
+            0.6s ease;
+
+    }
+
+
+    .approve-btn:hover::before {
+
+        left:
+            130%;
+
+    }
+
+
+    .approve-btn:hover {
+
+        color:
+            white;
+
+        background:
+            #059669;
+
+        border-color:
+            #059669;
+
+        transform:
+            translateY(-2px);
+
+        box-shadow:
+            0 10px 25px
+            rgba(16,185,129,0.18);
+
+    }
+
+
+    .approve-btn i {
+
+        transition:
+            0.25s ease;
+
+    }
+
+
+    .approve-btn:hover i {
+
+        transform:
+            scale(1.15);
+
+    }
+
+
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
+
+    .empty-card {
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        text-align:
+            center;
+
+        padding:
+            70px 25px;
+
+        border-radius:
+            22px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.95),
+                rgba(9,16,29,0.95)
+            );
+
+        border:
+            1px solid
+            rgba(255,255,255,0.07);
+
+        box-shadow:
+            0 18px 55px
+            rgba(0,0,0,0.25);
+
+    }
+
+
+    .empty-icon {
+
+        width:
+            82px;
+
+        height:
+            82px;
+
+        margin:
+            0 auto 22px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            24px;
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.09);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.14);
+
+        font-size:
+            34px;
+
+        animation:
+            emptyFloat 4s ease-in-out infinite;
+
+    }
+
+
+    @keyframes emptyFloat {
+
+        0%,100% {
+
+            transform:
+                translateY(0);
+
+        }
+
+        50% {
+
+            transform:
+                translateY(-6px);
+
+        }
+
+    }
+
+
+    .empty-title {
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            1.15rem;
+
+        font-weight:
+            700;
+
+        margin-bottom:
+            8px;
+
+    }
+
+
+    .empty-description {
+
+        color:
+            #718096;
+
+        font-size:
+            0.82rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 768px) {
+
+        .approvals-header {
+
+            align-items:
+                flex-start;
+
+            flex-direction:
+                column;
+
+            padding:
+                22px;
+
+        }
+
+
+        .pending-count {
+
+            align-self:
+                flex-start;
+
+        }
+
+    }
+
+
+    @media (max-width: 576px) {
+
+        .approvals-page {
+
+            padding-top:
+                15px;
+
+        }
+
+
+        .header-icon {
+
+            width:
+                48px;
+
+            height:
+                48px;
+
+        }
+
+
+        .page-title {
+
+            font-size:
+                1.25rem;
+
+        }
+
+
+        .student-card-body {
+
+            padding:
+                22px;
+
+        }
+
+    }
+
+</style>
+
+
+<div class="approvals-page">
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================= -->
+
+    <div class="approvals-header">
+
+        <div class="header-left">
+
+            <div class="header-icon">
+
+                <i class="bi bi-person-check-fill"></i>
+
+            </div>
+
+
+            <div>
+
+                <h1 class="page-title">
+
+                    Student Approvals
+
+                </h1>
+
+
+                <p class="page-description">
+
+                    Review and approve pending student registrations.
+
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if pending_students %}
+
+            <div class="pending-count">
+
+                <span class="pending-dot"></span>
+
+                <i class="bi bi-hourglass-split"></i>
+
+                {{ pending_students|length }} Pending
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =================================================
+         PENDING STUDENTS
+    ================================================= -->
+
+    {% if pending_students %}
+
+        <div class="row g-4">
+
+            {% for student in pending_students %}
+
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="student-card">
+
+                        <div class="student-card-body">
+
+
+                            <!-- STUDENT HEADER -->
+
+                            <div class="student-header">
+
+                                <div class="student-avatar">
+
+                                    <i class="bi bi-person-fill"></i>
+
+                                </div>
+
+
+                                <div class="flex-grow-1">
+
+                                    <h2 class="student-name">
+
+                                        {{ student.username }}
+
+                                    </h2>
+
+
+                                    <span class="status-badge">
+
+                                        <i class="bi bi-clock-fill"></i>
+
+                                        Pending
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- STUDENT INFO -->
+
+                            <div class="student-info">
+
+
+                                <!-- EMAIL -->
+
+                                <div class="info-row">
+
+                                    <div class="info-icon">
+
+                                        <i class="bi bi-envelope-fill"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="info-label">
+
+                                            Email
+
+                                        </span>
+
+                                        <span class="info-value">
+
+                                            {{ student.email }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ROLE -->
+
+                                <div class="info-row">
+
+                                    <div class="info-icon">
+
+                                        <i class="bi bi-person-badge-fill"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="info-label">
+
+                                            Role
+
+                                        </span>
+
+                                        <span class="info-value">
+
+                                            {{ student.get_role_display }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- FACE IMAGE -->
+
+                                <div class="info-row">
+
+                                    <div class="info-icon">
+
+                                        <i class="bi bi-camera-fill"></i>
+
+                                    </div>
+
+
+                                    <div>
+
+                                        <span class="info-label">
+
+                                            Face Image
+
+                                        </span>
+
+                                        <span class="info-value">
+
+                                            {{ student.face_image }}
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+
+
+                            <!-- DIVIDER -->
+
+                            <div class="student-divider"></div>
+
+
+                            <!-- APPROVE -->
+
+                            <form method="post"
+                                  action="{% url 'approve_student' student.id %}">
+
+                                {% csrf_token %}
+
+                                <button type="submit"
+                                        class="approve-btn">
+
+                                    <i class="bi bi-check-circle-fill"></i>
+
+                                    Approve Student
+
+                                </button>
+
+                            </form>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+
+        <!-- =================================================
+             EMPTY STATE
+        ================================================= -->
+
+        <div class="empty-card">
+
+            <div class="empty-icon">
+
+                <i class="bi bi-check-circle-fill"></i>
+
+            </div>
+
+
+            <h2 class="empty-title">
+
+                No Pending Student Registrations
+
+            </h2>
+
+
+            <p class="empty-description">
+
+                All student registrations have been reviewed.
+
+            </p>
+
+        </div>
+
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
+

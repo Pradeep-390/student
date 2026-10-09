@@ -1,0 +1,897 @@
+
+{% extends "base.html" %}
+
+{% block title %}User Profile | Student Attendance{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       PROFILE PAGE
+    ===================================================== */
+
+    .profile-page {
+
+        min-height:
+            calc(100vh - 170px);
+
+        padding:
+            35px 15px 55px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+    }
+
+
+    /* =====================================================
+       PROFILE CARD
+    ===================================================== */
+
+    .profile-card {
+
+        width:
+            100%;
+
+        max-width:
+            700px;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        border-radius:
+            25px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.97),
+                rgba(9,16,29,0.97)
+            );
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+
+        box-shadow:
+            0 25px 80px
+            rgba(0,0,0,0.42);
+
+        animation:
+            profileEnter 0.65s
+            cubic-bezier(.2,.8,.2,1);
+
+    }
+
+
+    @keyframes profileEnter {
+
+        from {
+
+            opacity:
+                0;
+
+            transform:
+                translateY(25px)
+                scale(0.98);
+
+        }
+
+        to {
+
+            opacity:
+                1;
+
+            transform:
+                translateY(0)
+                scale(1);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       TOP ACCENT
+    ===================================================== */
+
+    .profile-accent {
+
+        height:
+            4px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2563eb,
+                #6366f1,
+                #7c3aed
+            );
+
+        background-size:
+            200% 100%;
+
+        animation:
+            profileGradient 5s ease infinite;
+
+    }
+
+
+    @keyframes profileGradient {
+
+        0% {
+            background-position:
+                0% 50%;
+        }
+
+        50% {
+            background-position:
+                100% 50%;
+        }
+
+        100% {
+            background-position:
+                0% 50%;
+        }
+
+    }
+
+
+    /* =====================================================
+       PROFILE HEADER
+    ===================================================== */
+
+    .profile-header {
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        text-align:
+            center;
+
+        padding:
+            42px 25px 35px;
+
+        background:
+            radial-gradient(
+                circle at 50% 0%,
+                rgba(59,130,246,0.12),
+                transparent 55%
+            );
+
+    }
+
+
+    .profile-header::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            220px;
+
+        height:
+            220px;
+
+        top:
+            -150px;
+
+        left:
+            50%;
+
+        transform:
+            translateX(-50%);
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(124,58,237,0.09);
+
+        filter:
+            blur(35px);
+
+    }
+
+
+    /* =====================================================
+       PROFILE AVATAR
+    ===================================================== */
+
+    .profile-avatar {
+
+        position:
+            relative;
+
+        width:
+            92px;
+
+        height:
+            92px;
+
+        margin:
+            0 auto 20px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            26px;
+
+        color:
+            white;
+
+        font-size:
+            39px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+        border:
+            4px solid
+            rgba(255,255,255,0.05);
+
+        box-shadow:
+            0 18px 45px
+            rgba(59,130,246,0.25);
+
+        animation:
+            avatarFloat 4s ease-in-out infinite;
+
+    }
+
+
+    @keyframes avatarFloat {
+
+        0%,100% {
+
+            transform:
+                translateY(0);
+
+        }
+
+        50% {
+
+            transform:
+                translateY(-5px);
+
+        }
+
+    }
+
+
+    .profile-title {
+
+        position:
+            relative;
+
+        color:
+            #f8fafc;
+
+        font-size:
+            1.65rem;
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -0.6px;
+
+        margin:
+            0 0 7px;
+
+    }
+
+
+    .profile-subtitle {
+
+        position:
+            relative;
+
+        color:
+            #718096;
+
+        font-size:
+            0.84rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       INFORMATION AREA
+    ===================================================== */
+
+    .profile-body {
+
+        padding:
+            12px 35px 35px;
+
+    }
+
+
+    /* =====================================================
+       INFORMATION ITEM
+    ===================================================== */
+
+    .profile-item {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        gap:
+            15px;
+
+        padding:
+            17px 0;
+
+        border-bottom:
+            1px solid
+            rgba(255,255,255,0.06);
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .profile-item:last-child {
+
+        border-bottom:
+            none;
+
+    }
+
+
+    .profile-item:hover {
+
+        transform:
+            translateX(5px);
+
+    }
+
+
+    /* =====================================================
+       ITEM ICON
+    ===================================================== */
+
+    .profile-item-icon {
+
+        width:
+            47px;
+
+        height:
+            47px;
+
+        flex-shrink:
+            0;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            13px;
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.09);
+
+        border:
+            1px solid
+            rgba(59,130,246,0.12);
+
+        font-size:
+            18px;
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .profile-item:hover .profile-item-icon {
+
+        transform:
+            scale(1.08);
+
+        background:
+            rgba(59,130,246,0.14);
+
+    }
+
+
+    /* Different icon colors */
+
+    .email-icon {
+
+        color:
+            #a78bfa;
+
+        background:
+            rgba(124,58,237,0.09);
+
+        border-color:
+            rgba(124,58,237,0.12);
+
+    }
+
+
+    .role-icon {
+
+        color:
+            #34d399;
+
+        background:
+            rgba(16,185,129,0.09);
+
+        border-color:
+            rgba(16,185,129,0.12);
+
+    }
+
+
+    .camera-icon {
+
+        color:
+            #fbbf24;
+
+        background:
+            rgba(245,158,11,0.09);
+
+        border-color:
+            rgba(245,158,11,0.12);
+
+    }
+
+
+    /* =====================================================
+       ITEM CONTENT
+    ===================================================== */
+
+    .profile-label {
+
+        display:
+            block;
+
+        margin-bottom:
+            4px;
+
+        color:
+            #64748b;
+
+        font-size:
+            0.69rem;
+
+        font-weight:
+            600;
+
+        text-transform:
+            uppercase;
+
+        letter-spacing:
+            0.7px;
+
+    }
+
+
+    .profile-value {
+
+        display:
+            block;
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            0.9rem;
+
+        font-weight:
+            600;
+
+        word-break:
+            break-word;
+
+    }
+
+
+    /* =====================================================
+       ROLE BADGE
+    ===================================================== */
+
+    .profile-role {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            6px;
+
+        padding:
+            6px 11px;
+
+        border-radius:
+            999px;
+
+        color:
+            #86efac;
+
+        background:
+            rgba(16,185,129,0.09);
+
+        border:
+            1px solid
+            rgba(16,185,129,0.15);
+
+        font-size:
+            0.73rem;
+
+        font-weight:
+            650;
+
+    }
+
+
+    /* =====================================================
+       FOOTER
+    ===================================================== */
+
+    .profile-footer {
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        gap:
+            7px;
+
+        padding:
+            16px;
+
+        color:
+            #526176;
+
+        background:
+            rgba(4,10,20,0.35);
+
+        border-top:
+            1px solid
+            rgba(255,255,255,0.05);
+
+        font-size:
+            0.72rem;
+
+    }
+
+
+    .profile-footer i {
+
+        color:
+            #60a5fa;
+
+    }
+
+
+    /* =====================================================
+       MOBILE
+    ===================================================== */
+
+    @media (max-width: 576px) {
+
+        .profile-page {
+
+            padding:
+                20px 10px 40px;
+
+        }
+
+
+        .profile-card {
+
+            border-radius:
+                20px;
+
+        }
+
+
+        .profile-header {
+
+            padding:
+                35px 20px 28px;
+
+        }
+
+
+        .profile-body {
+
+            padding:
+                8px 22px 28px;
+
+        }
+
+
+        .profile-avatar {
+
+            width:
+                78px;
+
+            height:
+                78px;
+
+            font-size:
+                32px;
+
+            border-radius:
+                22px;
+
+        }
+
+
+        .profile-title {
+
+            font-size:
+                1.4rem;
+
+        }
+
+
+        .profile-item {
+
+            gap:
+                12px;
+
+            padding:
+                15px 0;
+
+        }
+
+
+        .profile-item-icon {
+
+            width:
+                43px;
+
+            height:
+                43px;
+
+        }
+
+    }
+
+</style>
+
+
+<div class="profile-page">
+
+    <div class="profile-card">
+
+        <!-- Animated Accent -->
+
+        <div class="profile-accent"></div>
+
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                <i class="bi bi-person-fill"></i>
+
+            </div>
+
+
+            <h1 class="profile-title">
+
+                User Profile
+
+            </h1>
+
+
+            <p class="profile-subtitle">
+
+                Your account information
+
+            </p>
+
+        </div>
+
+
+        <!-- ================= INFORMATION ================= -->
+
+        <div class="profile-body">
+
+
+            <!-- USERNAME -->
+
+            <div class="profile-item">
+
+                <div class="profile-item-icon">
+
+                    <i class="bi bi-person-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="profile-label">
+
+                        Username
+
+                    </span>
+
+                    <span class="profile-value">
+
+                        {{ user.username }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- EMAIL -->
+
+            <div class="profile-item">
+
+                <div class="profile-item-icon email-icon">
+
+                    <i class="bi bi-envelope-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="profile-label">
+
+                        Email Address
+
+                    </span>
+
+                    <span class="profile-value">
+
+                        {{ user.email }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- ROLE -->
+
+            <div class="profile-item">
+
+                <div class="profile-item-icon role-icon">
+
+                    <i class="bi bi-person-badge-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="profile-label">
+
+                        Account Role
+
+                    </span>
+
+                    <span class="profile-role">
+
+                        <i class="bi bi-shield-check"></i>
+
+                        {{ user.get_role_display }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            {% if user.role == "STUDENT" %}
+
+            <!-- FACE IMAGE -->
+
+            <div class="profile-item">
+
+                <div class="profile-item-icon camera-icon">
+
+                    <i class="bi bi-camera-fill"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="profile-label">
+
+                        Face Image
+
+                    </span>
+
+                    <span class="profile-value">
+
+                        {{ user.face_image }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+        </div>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <div class="profile-footer">
+
+            <i class="bi bi-shield-lock-fill"></i>
+
+            <span>
+
+                Your account information is securely protected
+
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

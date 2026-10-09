@@ -1,0 +1,1541 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Student Attendance{% endblock %}
+
+{% block content %}
+
+<style>
+
+    /* =====================================================
+       HOME PAGE
+    ===================================================== */
+
+    .home-page {
+        padding: 25px 0 50px;
+    }
+
+
+    /* =====================================================
+       HERO
+    ===================================================== */
+
+    .welcome-card {
+
+        position: relative;
+
+        overflow: hidden;
+
+        padding: 42px;
+
+        border-radius: 24px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(18, 31, 53, 0.96),
+                rgba(11, 19, 34, 0.96)
+            );
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+
+        box-shadow:
+            0 20px 65px rgba(0,0,0,0.30);
+
+        animation:
+            homeEnter 0.65s ease;
+
+    }
+
+
+    .welcome-card::before {
+
+        content: "";
+
+        position: absolute;
+
+        width: 350px;
+        height: 350px;
+
+        right: -140px;
+        top: -180px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(59,130,246,0.10);
+
+        filter: blur(40px);
+
+        pointer-events: none;
+
+    }
+
+
+    .welcome-card::after {
+
+        content: "";
+
+        position: absolute;
+
+        width: 250px;
+        height: 250px;
+
+        left: 30%;
+        bottom: -190px;
+
+        border-radius: 50%;
+
+        background:
+            rgba(124,58,237,0.08);
+
+        filter: blur(45px);
+
+        pointer-events: none;
+
+    }
+
+
+    @keyframes homeEnter {
+
+        from {
+
+            opacity: 0;
+
+            transform:
+                translateY(18px);
+
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       USER ICON
+    ===================================================== */
+
+    .welcome-icon {
+
+        width: 64px;
+        height: 64px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #6366f1
+            );
+
+        color: white;
+
+        font-size: 27px;
+
+        box-shadow:
+            0 12px 32px
+            rgba(37,99,235,0.25);
+
+        flex-shrink: 0;
+
+    }
+
+
+    .welcome-title {
+
+        color:
+            #f8fafc;
+
+        font-size:
+            clamp(1.65rem, 3vw, 2.2rem);
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -0.8px;
+
+        margin:
+            0 0 7px;
+
+    }
+
+
+    .welcome-text {
+
+        color:
+            #8190a5;
+
+        font-size:
+            0.92rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       ROLE BADGE
+    ===================================================== */
+
+    .role-badge {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            7px;
+
+        margin-top:
+            25px;
+
+        padding:
+            8px 13px;
+
+        border-radius:
+            999px;
+
+        color:
+            #93c5fd;
+
+        background:
+            rgba(59,130,246,0.09);
+
+        border:
+            1px solid rgba(59,130,246,0.16);
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            600;
+
+    }
+
+
+    /* =====================================================
+       FACIAL ATTENDANCE PANEL
+    ===================================================== */
+
+    .attendance-tech {
+
+        position:
+            relative;
+
+        padding:
+            30px 25px;
+
+        text-align:
+            center;
+
+        border-radius:
+            20px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(59,130,246,0.09),
+                rgba(124,58,237,0.07)
+            );
+
+        border:
+            1px solid rgba(96,165,250,0.10);
+
+        overflow:
+            hidden;
+
+    }
+
+
+    .attendance-tech::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            150px;
+
+        height:
+            150px;
+
+        left:
+            50%;
+
+        top:
+            50%;
+
+        transform:
+            translate(-50%,-50%);
+
+        border-radius:
+            50%;
+
+        border:
+            1px solid rgba(96,165,250,0.12);
+
+        animation:
+            techPulse 3s ease-in-out infinite;
+
+    }
+
+
+    @keyframes techPulse {
+
+        0%,100% {
+
+            width:
+                130px;
+
+            height:
+                130px;
+
+            opacity:
+                0.4;
+
+        }
+
+        50% {
+
+            width:
+                180px;
+
+            height:
+                180px;
+
+            opacity:
+                0.9;
+
+        }
+
+    }
+
+
+    .tech-icon {
+
+        position:
+            relative;
+
+        width:
+            75px;
+
+        height:
+            75px;
+
+        margin:
+            0 auto 18px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            22px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+        color:
+            white;
+
+        font-size:
+            31px;
+
+        box-shadow:
+            0 12px 35px
+            rgba(59,130,246,0.28);
+
+    }
+
+
+    .tech-title {
+
+        position:
+            relative;
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            0.98rem;
+
+        font-weight:
+            650;
+
+        margin-bottom:
+            6px;
+
+    }
+
+
+    .tech-text {
+
+        position:
+            relative;
+
+        color:
+            #718096;
+
+        font-size:
+            0.76rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       SECTION HEADER
+    ===================================================== */
+
+    .dashboard-section {
+
+        margin-top:
+            55px;
+
+    }
+
+
+    .section-label {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            8px;
+
+        color:
+            #60a5fa;
+
+        font-size:
+            0.74rem;
+
+        font-weight:
+            700;
+
+        text-transform:
+            uppercase;
+
+        letter-spacing:
+            1px;
+
+        margin-bottom:
+            9px;
+
+    }
+
+
+    .section-title {
+
+        color:
+            #f1f5f9;
+
+        font-size:
+            1.45rem;
+
+        font-weight:
+            700;
+
+        margin:
+            0 0 6px;
+
+    }
+
+
+    .section-description {
+
+        color:
+            #718096;
+
+        font-size:
+            0.86rem;
+
+        margin:
+            0;
+
+    }
+
+
+    /* =====================================================
+       FEATURE CARDS
+    ===================================================== */
+
+    .feature-card {
+
+        height:
+            100%;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        padding:
+            28px;
+
+        border-radius:
+            18px;
+
+        background:
+            rgba(14,23,39,0.85);
+
+        border:
+            1px solid rgba(255,255,255,0.07);
+
+        transition:
+            0.35s cubic-bezier(.2,.8,.2,1);
+
+    }
+
+
+    .feature-card:hover {
+
+        transform:
+            translateY(-7px);
+
+        border-color:
+            rgba(59,130,246,0.22);
+
+        box-shadow:
+            0 20px 50px
+            rgba(0,0,0,0.30);
+
+    }
+
+
+    .feature-card::after {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            120px;
+
+        height:
+            120px;
+
+        right:
+            -70px;
+
+        bottom:
+            -70px;
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(59,130,246,0.06);
+
+        transition:
+            0.4s ease;
+
+    }
+
+
+    .feature-card:hover::after {
+
+        transform:
+            scale(2);
+
+    }
+
+
+    /* =====================================================
+       FEATURE ICON
+    ===================================================== */
+
+    .feature-icon {
+
+        width:
+            55px;
+
+        height:
+            55px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            15px;
+
+        margin-bottom:
+            20px;
+
+        font-size:
+            22px;
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .feature-card:hover .feature-icon {
+
+        transform:
+            scale(1.08)
+            rotate(-3deg);
+
+    }
+
+
+    .camera-icon {
+
+        color:
+            #60a5fa;
+
+        background:
+            rgba(59,130,246,0.10);
+
+        border:
+            1px solid rgba(59,130,246,0.12);
+
+    }
+
+
+    .history-icon {
+
+        color:
+            #a78bfa;
+
+        background:
+            rgba(124,58,237,0.10);
+
+        border:
+            1px solid rgba(124,58,237,0.12);
+
+    }
+
+
+    /* =====================================================
+       FEATURE CONTENT
+    ===================================================== */
+
+    .feature-title {
+
+        color:
+            #e2e8f0;
+
+        font-size:
+            1rem;
+
+        font-weight:
+            650;
+
+        margin-bottom:
+            8px;
+
+    }
+
+
+    .feature-description {
+
+        color:
+            #718096;
+
+        font-size:
+            0.82rem;
+
+        line-height:
+            1.65;
+
+        margin-bottom:
+            22px;
+
+    }
+
+
+    /* =====================================================
+       FEATURE BUTTON
+    ===================================================== */
+
+    .feature-btn {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            7px;
+
+        padding:
+            9px 14px;
+
+        border-radius:
+            9px;
+
+        text-decoration:
+            none;
+
+        font-size:
+            0.78rem;
+
+        font-weight:
+            600;
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .attendance-btn {
+
+        color:
+            #93c5fd;
+
+        background:
+            rgba(59,130,246,0.09);
+
+        border:
+            1px solid rgba(59,130,246,0.15);
+
+    }
+
+
+    .attendance-btn:hover {
+
+        color:
+            white;
+
+        background:
+            #2563eb;
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    .history-btn {
+
+        color:
+            #c4b5fd;
+
+        background:
+            rgba(124,58,237,0.09);
+
+        border:
+            1px solid rgba(124,58,237,0.15);
+
+    }
+
+
+    .history-btn:hover {
+
+        color:
+            white;
+
+        background:
+            #7c3aed;
+
+        transform:
+            translateY(-2px);
+
+    }
+
+
+    /* =====================================================
+       GUEST HOME
+    ===================================================== */
+
+    .guest-page {
+
+        min-height:
+            calc(100vh - 180px);
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        padding:
+            35px 15px;
+
+    }
+
+
+    .guest-card {
+
+        width:
+            100%;
+
+        max-width:
+            850px;
+
+        position:
+            relative;
+
+        overflow:
+            hidden;
+
+        text-align:
+            center;
+
+        padding:
+            65px 40px;
+
+        border-radius:
+            26px;
+
+        background:
+            linear-gradient(
+                145deg,
+                rgba(17,28,48,0.96),
+                rgba(9,16,29,0.96)
+            );
+
+        border:
+            1px solid rgba(255,255,255,0.08);
+
+        box-shadow:
+            0 25px 80px
+            rgba(0,0,0,0.35);
+
+        animation:
+            homeEnter 0.7s ease;
+
+    }
+
+
+    .guest-card::before {
+
+        content:
+            "";
+
+        position:
+            absolute;
+
+        width:
+            400px;
+
+        height:
+            400px;
+
+        left:
+            50%;
+
+        top:
+            -300px;
+
+        transform:
+            translateX(-50%);
+
+        border-radius:
+            50%;
+
+        background:
+            rgba(59,130,246,0.12);
+
+        filter:
+            blur(60px);
+
+    }
+
+
+    .guest-icon {
+
+        position:
+            relative;
+
+        width:
+            90px;
+
+        height:
+            90px;
+
+        margin:
+            0 auto 25px;
+
+        display:
+            flex;
+
+        align-items:
+            center;
+
+        justify-content:
+            center;
+
+        border-radius:
+            26px;
+
+        color:
+            white;
+
+        font-size:
+            38px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #7c3aed
+            );
+
+        box-shadow:
+            0 18px 45px
+            rgba(59,130,246,0.25);
+
+        animation:
+            iconFloat 4s ease-in-out infinite;
+
+    }
+
+
+    .guest-title {
+
+        position:
+            relative;
+
+        color:
+            #f8fafc;
+
+        font-size:
+            clamp(1.8rem,4vw,2.5rem);
+
+        font-weight:
+            750;
+
+        letter-spacing:
+            -1px;
+
+        margin-bottom:
+            14px;
+
+    }
+
+
+    .guest-description {
+
+        position:
+            relative;
+
+        max-width:
+            620px;
+
+        margin:
+            0 auto 30px;
+
+        color:
+            #8190a5;
+
+        font-size:
+            0.96rem;
+
+        line-height:
+            1.7;
+
+    }
+
+
+    /* =====================================================
+       GUEST BUTTONS
+    ===================================================== */
+
+    .guest-actions {
+
+        position:
+            relative;
+
+        display:
+            flex;
+
+        justify-content:
+            center;
+
+        gap:
+            12px;
+
+        flex-wrap:
+            wrap;
+
+    }
+
+
+    .guest-login {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            8px;
+
+        padding:
+            12px 22px;
+
+        border-radius:
+            10px;
+
+        color:
+            white;
+
+        text-decoration:
+            none;
+
+        font-size:
+            0.86rem;
+
+        font-weight:
+            600;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #4f46e5
+            );
+
+        box-shadow:
+            0 9px 28px
+            rgba(37,99,235,0.22);
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .guest-login:hover {
+
+        color:
+            white;
+
+        transform:
+            translateY(-3px);
+
+        box-shadow:
+            0 14px 35px
+            rgba(37,99,235,0.34);
+
+    }
+
+
+    .guest-signup {
+
+        display:
+            inline-flex;
+
+        align-items:
+            center;
+
+        gap:
+            8px;
+
+        padding:
+            11px 21px;
+
+        border-radius:
+            10px;
+
+        color:
+            #a5b4fc;
+
+        text-decoration:
+            none;
+
+        font-size:
+            0.86rem;
+
+        font-weight:
+            600;
+
+        background:
+            rgba(124,58,237,0.07);
+
+        border:
+            1px solid rgba(124,58,237,0.20);
+
+        transition:
+            0.3s ease;
+
+    }
+
+
+    .guest-signup:hover {
+
+        color:
+            white;
+
+        background:
+            rgba(124,58,237,0.20);
+
+        transform:
+            translateY(-3px);
+
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+    ===================================================== */
+
+    @media (max-width: 991px) {
+
+        .welcome-card {
+
+            padding:
+                30px;
+
+        }
+
+        .attendance-tech {
+
+            margin-top:
+                25px;
+
+        }
+
+    }
+
+
+    @media (max-width: 576px) {
+
+        .home-page {
+
+            padding-top:
+                10px;
+
+        }
+
+
+        .welcome-card {
+
+            padding:
+                25px 20px;
+
+            border-radius:
+                20px;
+
+        }
+
+
+        .welcome-title {
+
+            font-size:
+                1.5rem;
+
+        }
+
+
+        .welcome-icon {
+
+            width:
+                54px;
+
+            height:
+                54px;
+
+            font-size:
+                23px;
+
+        }
+
+
+        .feature-card {
+
+            padding:
+                23px;
+
+        }
+
+
+        .guest-card {
+
+            padding:
+                45px 22px;
+
+            border-radius:
+                20px;
+
+        }
+
+
+        .guest-title {
+
+            font-size:
+                1.65rem;
+
+        }
+
+
+        .guest-description {
+
+            font-size:
+                0.86rem;
+
+        }
+
+    }
+
+</style>
+
+
+<div class="home-page">
+
+{% if user.is_authenticated %}
+
+
+    <!-- =================================================
+         WELCOME HERO
+    ================================================= -->
+
+    <div class="welcome-card">
+
+        <div class="row align-items-center position-relative">
+
+
+            <!-- LEFT -->
+
+            <div class="col-lg-8">
+
+                <div class="d-flex align-items-center">
+
+                    <div class="welcome-icon me-3">
+
+                        <i class="bi bi-person-check-fill"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1 class="welcome-title">
+
+                            Welcome, {{ user.username }}
+
+                        </h1>
+
+                        <p class="welcome-text">
+
+                            Your smart attendance dashboard is ready.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ROLE -->
+
+                <div class="role-badge">
+
+                    <i class="bi bi-person-badge"></i>
+
+                    <span>
+                        {{ user.get_role_display }}
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+
+            <div class="col-lg-4">
+
+                <div class="attendance-tech">
+
+                    <div class="tech-icon">
+
+                        <i class="bi bi-camera-fill"></i>
+
+                    </div>
+
+                    <h5 class="tech-title">
+
+                        Facial Attendance
+
+                    </h5>
+
+                    <p class="tech-text">
+
+                        Smart • Secure • Automated
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {% if user.role == "STUDENT" %}
+
+
+    <!-- =================================================
+         STUDENT DASHBOARD
+    ================================================= -->
+
+    <section class="dashboard-section">
+
+
+        <!-- SECTION HEADER -->
+
+        <div class="mb-4">
+
+            <div class="section-label">
+
+                <i class="bi bi-grid-1x2-fill"></i>
+
+                Student Workspace
+
+            </div>
+
+
+            <h2 class="section-title">
+
+                Student Dashboard
+
+            </h2>
+
+
+            <p class="section-description">
+
+                Manage your attendance and view your records.
+
+            </p>
+
+        </div>
+
+
+        <!-- FEATURES -->
+
+        <div class="row g-4">
+
+
+            <!-- SUBMIT ATTENDANCE -->
+
+            <div class="col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon camera-icon">
+
+                        <i class="bi bi-camera-fill"></i>
+
+                    </div>
+
+
+                    <h3 class="feature-title">
+
+                        Submit Attendance
+
+                    </h3>
+
+
+                    <p class="feature-description">
+
+                        Mark your attendance using the facial
+                        attendance system quickly and securely.
+
+                    </p>
+
+
+                    <a href="{% url 'submit_attendance' %}"
+                       class="feature-btn attendance-btn">
+
+                        <i class="bi bi-check-circle"></i>
+
+                        Submit Attendance
+
+                        <i class="bi bi-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ATTENDANCE HISTORY -->
+
+            <div class="col-md-6">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon history-icon">
+
+                        <i class="bi bi-clock-history"></i>
+
+                    </div>
+
+
+                    <h3 class="feature-title">
+
+                        My Attendance
+
+                    </h3>
+
+
+                    <p class="feature-description">
+
+                        View your previous attendance records,
+                        dates and attendance history.
+
+                    </p>
+
+
+                    <a href="{% url 'attendance_history' %}"
+                       class="feature-btn history-btn">
+
+                        <i class="bi bi-calendar-check"></i>
+
+                        View Attendance
+
+                        <i class="bi bi-arrow-right ms-1"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+    {% endif %}
+
+
+{% else %}
+
+
+    <!-- =================================================
+         GUEST HOME
+    ================================================= -->
+
+    <div class="guest-page">
+
+        <div class="guest-card">
+
+
+            <!-- ICON -->
+
+            <div class="guest-icon">
+
+                <i class="bi bi-camera-fill"></i>
+
+            </div>
+
+
+            <!-- TITLE -->
+
+            <h1 class="guest-title">
+
+                Smart Attendance,
+                <br>
+
+                Simplified.
+
+            </h1>
+
+
+            <!-- DESCRIPTION -->
+
+            <p class="guest-description">
+
+                Welcome to the Student Facial Attendance System.
+                A smart, secure and convenient way to manage
+                student attendance using facial recognition
+                technology.
+
+            </p>
+
+
+            <!-- ACTIONS -->
+
+            <div class="guest-actions">
+
+
+                <a href="{% url 'login' %}"
+                   class="guest-login">
+
+                    <i class="bi bi-box-arrow-in-right"></i>
+
+                    Login
+
+                </a>
+
+
+                <a href="{% url 'signup' %}"
+                   class="guest-signup">
+
+                    <i class="bi bi-person-plus"></i>
+
+                    Create Account
+
+                </a>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+{% endif %}
+
+</div>
+
+{% endblock %}
+
